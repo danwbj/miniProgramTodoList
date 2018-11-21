@@ -1,3 +1,4 @@
+console.log(wx.getStorageSync("tasks"));
 Page({
   data: {
     tabs: ["全部", "未完成", "已完成"],
@@ -5,13 +6,10 @@ Page({
     sliderOffset: 0,
     sliderLeft: 0,
 
-    tasks: [],
-    newTask: "",
-    key: 0
+    tasks: wx.getStorageSync("tasks") || [],
+    newTask: ""
   },
   tabClick: function(e) {
-    console.log(e.currentTarget.id);
-    console.log(e.currentTarget.offsetLeft);
     this.setData({
       sliderOffset: e.currentTarget.offsetLeft,
       activeIndex: e.currentTarget.id
@@ -35,7 +33,6 @@ Page({
   checkboxChange: function(e) {
     console.log("----checkboxChange");
     let value = e.currentTarget.dataset.value;
-    console.log(value);
     let tasks = this.data.tasks;
 
     let index = tasks.findIndex(task => task.value == value);
@@ -45,10 +42,10 @@ Page({
     }
 
     tasks[index].status = !tasks[index].status;
-
     this.setData({
       tasks: tasks
     });
+    wx.setStorageSync("tasks", tasks);
   },
   typeNewTask: function(e) {
     this.setData({
@@ -57,19 +54,17 @@ Page({
   },
   addTask: function(e) {
     let tasks = this.data.tasks;
-    let key = this.data.key;
     let newTaskObj = {
       content: this.data.newTask,
-      value: key++,
+      value: Date.parse(new Date()),
       status: false
     };
     tasks.push(newTaskObj);
-    console.log(tasks);
     this.setData({
       tasks: tasks,
-      key: key,
       newTask: ""
     });
+    wx.setStorageSync("tasks", tasks);
   },
   removeTask: function(e) {
     let self = this;
@@ -93,15 +88,4 @@ Page({
       }
     });
   }
-
-  //   removeTask: function(e) {
-  //     let value = e.currentTarget.dataset.value;
-  //     console.log("removeTask", value);
-  //     let tasks = this.data.tasks;
-  //     let newTasks = tasks.filter(task => task.value != value);
-  //     console.log(newTasks);
-  //     this.setData({
-  //       tasks: newTasks
-  //     });
-  //   }
 });
