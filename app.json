@@ -1,0 +1,9 @@
+{
+  "pages": ["pages/todo/todo", "pages/index/index", "pages/logs/logs"],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "任务清单",
+    "navigationBarTextStyle": "black"
+  }
+}
