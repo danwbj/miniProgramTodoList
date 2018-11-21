@@ -1,7 +1,10 @@
-console.log(wx.getStorageSync("tasks"));
+var app = getApp();
+var userInfo = app.globalData.userInfo;
+console.log(userInfo);
+
 Page({
   data: {
-    tabs: ["全部", "未完成", "已完成"],
+    tabs: ["全部任务", "未完成", "已完成"],
     activeIndex: 0,
     sliderOffset: 0,
     sliderLeft: 0,
@@ -82,6 +85,7 @@ Page({
           self.setData({
             tasks: newTasks
           });
+          wx.setStorageSync("tasks", newTasks);
         } else {
           console.log("用户点击辅助操作");
         }
