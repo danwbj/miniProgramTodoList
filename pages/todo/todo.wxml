@@ -27,8 +27,8 @@
                 <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
                     <view class="weui-cells weui-cells_after-title">
                         <checkbox-group>
-                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" data-value="{{item.value}}" bindtap="checkboxChange">
-                                <checkbox class="weui-check" value="{{item.value}}" />
+                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" data-value="{{item._id}}" bindtap="checkboxChange">
+                                <checkbox class="weui-check" value="{{item._id}}" />
                                 <view class="weui-cell__hd weui-check__hd_in-checkbox">
                                     <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!item.status}}"></icon>
                                     <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{item.status}}"></icon>
@@ -37,7 +37,7 @@
                                     {{item.content}}
                                 </view>
                                 <view class="weui-cell__ft">
-                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item.value}}" catchtap="removeTask">
+                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item._id}}" catchtap="removeTask">
                                         删除
                                     </button>
                                 </view>
@@ -49,14 +49,14 @@
                 <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
                     <view class="weui-cells weui-cells_after-title">
                         <checkbox-group>
-                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" wx:if="{{!item.status}}" data-value="{{item.value}}" bindtap="checkboxChange">
-                                <checkbox class="weui-check" value="{{item.value}}" />
+                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="_id" wx:if="{{!item.status}}" data-value="{{item._id}}" bindtap="checkboxChange">
+                                <checkbox class="weui-check" value="{{item._id}}" />
                                 <view class="weui-cell__hd weui-check__hd_in-checkbox">
                                     <icon class="weui-icon-checkbox_circle" type="circle" size="23"></icon>
                                 </view>
                                 <view class="weui-cell__bd">{{item.content}}</view>
                                 <view class="weui-cell__ft">
-                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item.value}}" catchtap="removeTask">
+                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item._id}}" catchtap="removeTask">
                                         删除
                                     </button>
                                 </view>
@@ -68,14 +68,14 @@
                 <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
                     <view class="weui-cells weui-cells_after-title">
                         <checkbox-group>
-                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" wx:if="{{item.status}}" data-value="{{item.value}}" bindtap="checkboxChange">
-                                <checkbox class="weui-check" value="{{item.value}}" />
+                            <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" wx:if="{{item.status}}" data-value="{{item._id}}" bindtap="checkboxChange">
+                                <checkbox class="weui-check" value="{{item._id}}" />
                                 <view class="weui-cell__hd weui-check__hd_in-checkbox">
                                     <icon class="weui-icon-checkbox_success" type="success" size="23"></icon>
                                 </view>
                                 <view class="weui-cell__bd deleted-line">{{item.content}}</view>
                                 <view class="weui-cell__ft">
-                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item.value}}" catchtap="removeTask">
+                                    <button class="weui-btn" type="warn" size="mini" data-value="{{item._id}}" catchtap="removeTask">
                                         删除
                                     </button>
                                 </view>

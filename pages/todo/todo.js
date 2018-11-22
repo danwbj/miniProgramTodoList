@@ -1,54 +1,58 @@
+import { saveTodos, getTodos, updateTodo, removeTodo } from "../../api/index";
 var app = getApp();
-var userInfo = app.globalData.userInfo;
-console.log(userInfo);
 
 Page({
   data: {
+    userInfo: null,
     tabs: ["全部任务", "未完成", "已完成"],
     activeIndex: 0,
     sliderOffset: 0,
     sliderLeft: 0,
 
-    tasks: wx.getStorageSync("tasks") || [],
+    tasks: [],
     newTask: ""
   },
+  onShow: function() {
+    let openid = wx.getStorageSync("openid");
+    this.setData({ userInfo: app.globalData.userInfo });
+    getTodos(openid)
+      .then(res => {
+        this.setData({ tasks: res.data });
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
+  },
+
   tabClick: function(e) {
     this.setData({
       sliderOffset: e.currentTarget.offsetLeft,
       activeIndex: e.currentTarget.id
     });
   },
-  //   checkboxChange: function(e) {
-  //     console.log("checkbox发生change事件，携带value值为：", e.detail.value);
-  //     var tasks = this.data.tasks,
-  //       values = e.detail.value;
-  //     for (var i = 0, lenI = tasks.length; i < lenI; ++i) {
-  //       if (values.indexOf(tasks[i].value + "") != -1) {
-  //         console.log(i);
-  //         console.log(tasks[i].status);
-  //         tasks[i].status = !tasks[i].status;
-  //       }
-  //     }
-  //     this.setData({
-  //       tasks: tasks
-  //     });
-  //   },
   checkboxChange: function(e) {
     console.log("----checkboxChange");
-    let value = e.currentTarget.dataset.value;
+    let _id = e.currentTarget.dataset.value;
     let tasks = this.data.tasks;
 
-    let index = tasks.findIndex(task => task.value == value);
+    updateTodo(_id)
+      .then(res => {
+        if (res.stats.updated === 1) {
+          let index = tasks.findIndex(task => task._id == _id);
+          if (index < 0) {
+            return;
+          }
+          tasks[index].status = !tasks[index].status;
+          this.setData({
+            tasks: tasks
+          });
+        } else {
+          console.log("操作失败");
+        }
+      })
+      .catch(err => {});
 
-    if (index < 0) {
-      return;
-    }
-
-    tasks[index].status = !tasks[index].status;
-    this.setData({
-      tasks: tasks
-    });
-    wx.setStorageSync("tasks", tasks);
+    // wx.setStorageSync("tasks", tasks);
   },
   typeNewTask: function(e) {
     this.setData({
@@ -56,18 +60,26 @@ Page({
     });
   },
   addTask: function(e) {
+    let self = this;
     let tasks = this.data.tasks;
     let newTaskObj = {
       content: this.data.newTask,
       value: Date.parse(new Date()),
-      status: false
+      status: false,
+      created: Date.now()
     };
-    tasks.push(newTaskObj);
-    this.setData({
-      tasks: tasks,
-      newTask: ""
-    });
-    wx.setStorageSync("tasks", tasks);
+
+    // wx.setStorageSync("tasks", tasks);
+    saveTodos(newTaskObj)
+      .then(res => {
+        newTaskObj._id = res._id;
+        tasks.unshift(newTaskObj);
+        self.setData({
+          tasks: tasks,
+          newTask: ""
+        });
+      })
+      .catch(err => {});
   },
   removeTask: function(e) {
     let self = this;
@@ -78,14 +90,22 @@ Page({
       cancelText: "取消",
       success: function(res) {
         if (res.confirm) {
-          console.log("用户点击主操作");
-          let value = e.currentTarget.dataset.value;
+          let _id = e.currentTarget.dataset.value;
           let tasks = self.data.tasks;
-          let newTasks = tasks.filter(task => task.value != value);
-          self.setData({
-            tasks: newTasks
-          });
-          wx.setStorageSync("tasks", newTasks);
+          removeTodo(_id)
+            .then(res => {
+              if (res.stats.removed === 1) {
+                let newTasks = tasks.filter(task => task._id != _id);
+                self.setData({
+                  tasks: newTasks
+                });
+              } else {
+                console.log("操作失败");
+              }
+            })
+            .catch(err => {});
+
+          //   wx.setStorageSync("tasks", newTasks);
         } else {
           console.log("用户点击辅助操作");
         }
