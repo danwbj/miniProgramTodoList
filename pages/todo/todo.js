@@ -34,14 +34,13 @@ Page({
     console.log("----checkboxChange");
     let _id = e.currentTarget.dataset.value;
     let tasks = this.data.tasks;
-
-    updateTodo(_id)
+    let index = tasks.findIndex(task => task._id == _id);
+    if (index < 0) {
+      return;
+    }
+    updateTodo(_id, { status: !tasks[index].status })
       .then(res => {
         if (res.stats.updated === 1) {
-          let index = tasks.findIndex(task => task._id == _id);
-          if (index < 0) {
-            return;
-          }
           tasks[index].status = !tasks[index].status;
           this.setData({
             tasks: tasks

@@ -45,13 +45,13 @@ export const getTodos = openid => {
  * 更新某一条todo的状态
  * @param {*} _id
  */
-export const updateTodo = _id => {
+export const updateTodo = (_id, data) => {
   return db
     .collection("todos")
     .doc(_id)
     .update({
       data: {
-        status: true
+        status: data.status
       }
     });
 };
