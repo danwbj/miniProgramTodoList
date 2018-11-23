@@ -3,6 +3,7 @@
     "pages/login/login",
     "pages/index/index",
     "pages/todo/todo",
+    "pages/addtask/addtask",
     "pages/logs/logs"
   ],
   "window": {

@@ -1,0 +1,10 @@
+/* @import "../../src/wxss/weui.wxss"; */
+.level1-text {
+  color: #ff0b0b;
+}
+.level2-text {
+  color: #acac59;
+}
+.level3-text {
+  color: #5cad6c;
+}

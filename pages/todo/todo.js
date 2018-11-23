@@ -9,8 +9,8 @@ Page({
     sliderOffset: 0,
     sliderLeft: 0,
 
-    tasks: [],
-    newTask: ""
+    tasks: []
+    // newTask: ""
   },
   onShow: function() {
     let openid = wx.getStorageSync("openid");
@@ -31,7 +31,9 @@ Page({
     });
   },
   checkboxChange: function(e) {
-    console.log("----checkboxChange");
+    wx.showLoading({
+      title: "加载中"
+    });
     let _id = e.currentTarget.dataset.value;
     let tasks = this.data.tasks;
     let index = tasks.findIndex(task => task._id == _id);
@@ -40,6 +42,7 @@ Page({
     }
     updateTodo(_id, { status: !tasks[index].status })
       .then(res => {
+        wx.hideLoading();
         if (res.stats.updated === 1) {
           tasks[index].status = !tasks[index].status;
           this.setData({
@@ -49,38 +52,14 @@ Page({
           console.log("操作失败");
         }
       })
-      .catch(err => {});
+      .catch(err => {
+        wx.hideLoading();
+      });
 
     // wx.setStorageSync("tasks", tasks);
-  },
-  typeNewTask: function(e) {
-    this.setData({
-      newTask: e.detail.value.trim()
-    });
-  },
-  addTask: function(e) {
-    let self = this;
-    let tasks = this.data.tasks;
-    let newTaskObj = {
-      content: this.data.newTask,
-      value: Date.parse(new Date()),
-      status: false,
-      created: Date.now()
-    };
-
-    // wx.setStorageSync("tasks", tasks);
-    saveTodos(newTaskObj)
-      .then(res => {
-        newTaskObj._id = res._id;
-        tasks.unshift(newTaskObj);
-        self.setData({
-          tasks: tasks,
-          newTask: ""
-        });
-      })
-      .catch(err => {});
   },
   removeTask: function(e) {
+    console.log("removeTask");
     let self = this;
     wx.showModal({
       title: "警告",
@@ -91,8 +70,12 @@ Page({
         if (res.confirm) {
           let _id = e.currentTarget.dataset.value;
           let tasks = self.data.tasks;
+          wx.showLoading({
+            title: "加载中"
+          });
           removeTodo(_id)
             .then(res => {
+              wx.hideLoading();
               if (res.stats.removed === 1) {
                 let newTasks = tasks.filter(task => task._id != _id);
                 self.setData({
@@ -102,13 +85,21 @@ Page({
                 console.log("操作失败");
               }
             })
-            .catch(err => {});
+            .catch(err => {
+              wx.hideLoading();
+            });
 
           //   wx.setStorageSync("tasks", newTasks);
         } else {
           console.log("用户点击辅助操作");
         }
       }
+    });
+  },
+  goAddTask: function(e) {
+    console.log("------------");
+    wx.navigateTo({
+      url: "../addtask/addtask"
     });
   }
 });
