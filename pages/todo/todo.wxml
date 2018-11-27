@@ -15,7 +15,18 @@ var getLeftTime = function(date_end) {
     return "已延期";
   }
 };
+var getfinish = function(tasks) {
+    var sum = tasks.length
+    var finish = tasks.filter(function (item) {
+        return item.status==true;
+    });
+    var rate = (finish.length/sum).toFixed(4)*100
+   
+    return rate
+
+}
 module.exports.getLeftTime = getLeftTime;
+module.exports.getfinish = getfinish;
 </wxs>
 <view class="page">
     <!-- 页头 -->
@@ -23,12 +34,9 @@ module.exports.getLeftTime = getLeftTime;
     <!-- 主体 -->
     <view class="page__bd">
         <view class="weui-cell finish">
-            <!-- <view class="weui-progress"> -->
             <view class="weui-progress__bar">
-                <progress percent="80" stroke-width="8" show-info="{{true}}" border-radius="10px" active="{{true}}" />
+                <progress percent="{{m1.getfinish(tasks)}}" stroke-width="8" show-info="{{true}}" border-radius="10px" active="{{true}}" active-mode="forwards" />
             </view>
-            <!-- <view class="rate">80%</view> -->
-            <!-- </view> -->
         </view>
         <view class="weui-tab">
             <view class="weui-navbar">
@@ -83,6 +91,9 @@ module.exports.getLeftTime = getLeftTime;
                                 </view>
                                 <view class="weui-cell__bd">{{item.content}}</view>
                                 <view class="weui-cell__ft">
+                                    <label class="deadline">
+                                        {{m1.getLeftTime(item.deadline)}}
+                                    </label>
                                     <view class="u-icon-grayTrash" data-value="{{item._id}}" catchtap="removeTask"></view>
                                     <!-- <view class="u-icon-del" data-value="{{item._id}}" catchtap="removeTask"></view> -->
                                 </view>
@@ -105,6 +116,9 @@ module.exports.getLeftTime = getLeftTime;
                                 </view>
                                 <view class="weui-cell__bd deleted-line">{{item.content}}</view>
                                 <view class="weui-cell__ft">
+                                    <label class="deadline">
+                                        {{m1.getLeftTime(item.deadline)}}
+                                    </label>
                                     <view class="u-icon-grayTrash" data-value="{{item._id}}" catchtap="removeTask"></view>
                                 </view>
                             </label>
