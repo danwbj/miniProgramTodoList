@@ -1,3 +1,22 @@
+<!-- wxml -->
+<wxs module="m1">
+var getLeftTime = function(date_end) {
+ var t = date_end - Date.now();
+  if (t > 0) {
+      var day = Math.floor(t / (24 * 3600 * 1000));
+   var leave1 = t % (24 * 3600 * 1000);
+    var hours = Math.floor(leave1 / (3600 * 1000));
+    var leave2 = leave1 % (3600 * 1000);
+    var minutes = Math.floor(leave2 / (60 * 1000));
+    var leave3 = leave2 % (60 * 1000);
+    var seconds = Math.round(leave3 / 1000);
+    return "剩余"+day+"天 "+hours+"时"+minutes+"分"
+  } else {
+    return "已延期";
+  }
+};
+module.exports.getLeftTime = getLeftTime;
+</wxs>
 <view class="page">
     <!-- 页头 -->
     <view class="page__hd"></view>
@@ -39,6 +58,9 @@
                                     {{item.content}}
                                 </view>
                                 <view class="weui-cell__ft">
+                                    <label class="deadline">
+                                        {{m1.getLeftTime(item.deadline)}}
+                                    </label>
                                     <view class="u-icon-grayTrash" data-value="{{item._id}}" catchtap="removeTask"></view>
                                     <!-- <view class="u-icon-radioDelete" data-value="{{item._id}}" catchtap="removeTask"></view> -->
                                 </view>
@@ -93,7 +115,7 @@
         </view>
         <view class="float-action-button" bindtap="goAddTask"></view>
         <!-- <view class="u-icon-grayTrash" data-value="{{item._id}}" catchtap="removeTask"></view> -->
-        <!-- <view class="weui-cells__title">待办事项</view>
+        <!-- <view class="weui-cells__title">简约清单</view>
         <view class="weui-cells weui-cells_after-title">
             <checkbox-group>
                 <label class="weui-cell weui-check__label" wx:for="{{tasks}}" wx:key="value" wx:if="{{!item.status}}">
@@ -135,7 +157,7 @@
     <view class="weui-msg__extra-area">
         <view class="weui-footer">
             <view class="weui-footer__links">
-                <navigator url="" class="weui-footer__link">待办事项</navigator>
+                <navigator url="" class="weui-footer__link">简约清单</navigator>
             </view>
             <view class="weui-footer__text">Copyright © wudd</view>
         </view>

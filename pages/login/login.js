@@ -115,7 +115,7 @@ Page({
     });
   },
 
-  onLoad: function() {
+  onShow: function() {
     this.getScope(this.getUserInfo, () => {
       this.setData({ auth: 0 });
     });

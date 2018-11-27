@@ -31,10 +31,10 @@
                     <view class="weui-label">计划</view>
                 </view>
                 <view class="weui-cell__bd weui-flex">
-                    <picker class="weui-flex__item" mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+                    <picker class="weui-flex__item" mode="date" value="{{date}}" bindchange="bindDateChange">
                         <view class="weui-input">{{date}}</view>
                     </picker>
-                    <picker class="weui-flex__item" mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+                    <picker class="weui-flex__item" mode="time" value="{{time}}" bindchange="bindTimeChange">
                         <view class="weui-input">{{time}}</view>
                     </picker>
                 </view>
@@ -51,7 +51,7 @@
     <view class="weui-msg__extra-area">
         <view class="weui-footer">
             <view class="weui-footer__links">
-                <navigator url="" class="weui-footer__link">待办事项</navigator>
+                <navigator url="" class="weui-footer__link">简约清单</navigator>
             </view>
             <view class="weui-footer__text">Copyright © wudd</view>
         </view>

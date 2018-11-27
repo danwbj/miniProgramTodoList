@@ -143,3 +143,7 @@
 .level3 {
   border-top: 10px solid #5cad6c;
 }
+.deadline {
+  margin-right: 20rpx;
+  font-size: 28rpx;
+}
