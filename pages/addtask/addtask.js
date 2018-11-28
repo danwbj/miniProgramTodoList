@@ -1,9 +1,15 @@
 import { saveTodos } from "../../api/index";
+var date = new Date();
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const day = date.getDate();
+const hour = date.getHours();
+const minute = date.getMinutes();
 Page({
   data: {
     newTask: "",
-    date: "2018-09-01",
-    time: "12:01",
+    date: year + "-" + month + "-" + day,
+    time: hour + ":" + minute,
     levels: ["紧急", "重要", "一般"],
     levelIndex: 0
   },
